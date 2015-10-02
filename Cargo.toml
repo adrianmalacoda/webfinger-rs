@@ -1,0 +1,10 @@
+[package]
+name = "webfinger"
+version = "0.1.0"
+authors = ["kenkeiras <kenkeiras@codigoparallevar.com>"]
+
+[dependencies]
+url = "0.2"
+
+[dependencies.hyper]
+git = "https://github.com/hyperium/hyper"
