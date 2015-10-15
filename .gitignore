@@ -3,6 +3,8 @@
 *#
 *.swp
 
+# Specific versions used in this build
+Cargo.lock
 
 # Build files
 target/
