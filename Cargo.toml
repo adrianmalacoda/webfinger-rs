@@ -5,6 +5,8 @@ authors = ["kenkeiras <kenkeiras@codigoparallevar.com>"]
 
 [dependencies]
 url = "0.2"
+serde = "*"
+serde_json = "*"
 
 [dependencies.hyper]
 git = "https://github.com/hyperium/hyper"
