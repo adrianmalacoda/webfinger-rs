@@ -1,5 +1,7 @@
+#[allow(unused_imports)]
 use std::collections::HashMap;
 
+#[allow(unused_imports)]
 use resource::resource::{Resource, ResourceLink, to_json, from_json};
 
 #[test]
@@ -121,6 +123,57 @@ fn deserialize_with_properties_test(){
                                               links: links};
 
     let r : String = "{\"aliases\":[],\"links\":[],\"properties\":{\"http://prop\":\"val\"},\"subject\":\"Subject\"}".to_string();
+    let deserialized_resource: Resource = from_json(&r);
+
+    assert_eq!(sample_resource, deserialized_resource);
+}
+
+
+#[test]
+fn serialize_with_simple_link_test(){
+
+    let subject : String = "Subject".to_string();
+    let aliases : Vec<String> = Vec::new();
+    let properties : HashMap<String, String> = HashMap::new();
+    let mut links : Vec<ResourceLink> = Vec::new();
+
+    links.push(ResourceLink{rel: "example".to_string(),
+                            type_: None,
+                            href: None,
+                            titles: HashMap::new(),
+                            properties: HashMap::new()});
+
+    let sample_resource : Resource = Resource{subject: subject,
+                                              aliases: aliases,
+                                              properties: properties,
+                                              links: links};
+
+
+    let r : String = to_json(&sample_resource);
+    assert_eq!(r,
+               "{\"aliases\":[],\"links\":[{\"rel\":\"example\",\"href\":null,\"type\":null,\"titles\":{},\"properties\":{}}],\"properties\":{},\"subject\":\"Subject\"}");
+}
+
+
+#[test]
+fn deserialize_with_simple_link_test(){
+    let subject : String = "Subject".to_string();
+    let aliases : Vec<String> = Vec::new();
+    let properties : HashMap<String, String> = HashMap::new();
+    let mut links : Vec<ResourceLink> = Vec::new();
+
+    links.push(ResourceLink{rel: "example".to_string(),
+                            type_: None,
+                            href: None,
+                            titles: HashMap::new(),
+                            properties: HashMap::new()});
+
+    let sample_resource : Resource = Resource{subject: subject,
+                                              aliases: aliases,
+                                              properties: properties,
+                                              links: links};
+
+    let r : String = "{\"aliases\":[],\"links\":[{\"rel\":\"example\",\"titles\":{},\"properties\":{}}],\"properties\":{},\"subject\":\"Subject\"}".to_string();
     let deserialized_resource: Resource = from_json(&r);
 
     assert_eq!(sample_resource, deserialized_resource);
