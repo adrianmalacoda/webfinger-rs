@@ -31,11 +31,19 @@ impl<'a> serde::ser::MapVisitor for ResourceLinkMapVisitor<'a> {
             }
             1 => {
                 self.state += 1;
-                Ok(Some(try!(serializer.visit_struct_elt("href", &self.value.href))))
+                let href : Option<String> = self.value.href.clone();
+                match href {
+                    None => Ok(None),
+                    Some(x) =>  Ok(Some(try!(serializer.visit_struct_elt("href", x))))
+                }
             }
             2 => {
                 self.state += 1;
-                Ok(Some(try!(serializer.visit_struct_elt("type", &self.value.type_))))
+                let type_ : Option<String> = self.value.type_.clone();
+                match type_ {
+                    None => Ok(None),
+                    Some(x) => Ok(Some(try!(serializer.visit_struct_elt("type", x))))
+                }
             }
             3 => {
                 self.state += 1;

@@ -151,7 +151,7 @@ fn serialize_with_simple_link_test(){
 
     let r : String = to_json(&sample_resource);
     assert_eq!(r,
-               "{\"aliases\":[],\"links\":[{\"rel\":\"example\",\"href\":null,\"type\":null,\"titles\":{},\"properties\":{}}],\"properties\":{},\"subject\":\"Subject\"}");
+               "{\"aliases\":[],\"links\":[{\"rel\":\"example\"}],\"properties\":{},\"subject\":\"Subject\"}");
 }
 
 
@@ -173,7 +173,7 @@ fn deserialize_with_simple_link_test(){
                                               properties: properties,
                                               links: links};
 
-    let r : String = "{\"aliases\":[],\"links\":[{\"rel\":\"example\",\"titles\":{},\"properties\":{}}],\"properties\":{},\"subject\":\"Subject\"}".to_string();
+    let r : String = "{\"aliases\":[],\"links\":[{\"rel\":\"example\"}],\"properties\":{},\"subject\":\"Subject\"}".to_string();
     let deserialized_resource: Resource = from_json(&r);
 
     assert_eq!(sample_resource, deserialized_resource);
