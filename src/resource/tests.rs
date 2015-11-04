@@ -4,6 +4,32 @@ use std::collections::HashMap;
 #[allow(unused_imports)]
 use resource::resource::{Resource, ResourceLink, to_json, from_json};
 
+// Serialized resources for reference
+#[allow(dead_code)]
+const MINIMAL_TEST_STR : &'static str =
+    "{\"aliases\":[],\"links\":[],\"properties\":{},\"subject\":\"Subject\"}";
+
+#[allow(dead_code)]
+const ALIASES_TEST_STR : &'static str =
+    "{\"aliases\":[\"alias1\",\"alias2\"],\"links\":[],\"properties\":{},\"subject\":\"Subject\"}";
+
+#[allow(dead_code)]
+const PROPERTIES_TEST_STR : &'static str =
+    "{\"aliases\":[],\"links\":[],\"properties\":{\"http://prop\":\"val\"},\"subject\":\"Subject\"}";
+
+#[allow(dead_code)]
+const SIMPLE_LINK_TEST_STR : &'static str =
+    "{\"aliases\":[],\"links\":[{\"rel\":\"example\"}],\"properties\":{},\"subject\":\"Subject\"}";
+
+#[allow(dead_code)]
+const FULL_LINK_TEST_STR : &'static str =
+    "{\"aliases\":[],\"links\":[{\"rel\":\"example\",\"href\":\"http://sample/\",\"type\":\"sample\",\"titles\":{\"es\":\"ejemplo\"},\"properties\":{\"sample_type\":\"test\"}}],\"properties\":{},\"subject\":\"Subject\"}";
+
+#[allow(dead_code)]
+const FULL_RESOURCE_TEST_STR : &'static str =
+    "{\"aliases\":[\"one\",\"two\"],\"links\":[{\"rel\":\"example\",\"href\":\"http://sample/\",\"type\":\"sample\",\"titles\":{\"es\":\"ejemplo\"},\"properties\":{\"sample_type\":\"test\"}}],\"properties\":{\"http://prop\":\"val\"},\"subject\":\"Subject\"}";
+
+
 #[test]
 fn minimal_serialize_test(){
 
@@ -19,7 +45,7 @@ fn minimal_serialize_test(){
 
 
     let r : String = to_json(&sample_resource);
-    assert_eq!(r, "{\"aliases\":[],\"links\":[],\"properties\":{},\"subject\":\"Subject\"}");
+    assert_eq!(r, MINIMAL_TEST_STR.to_string());
 }
 
 
@@ -35,8 +61,7 @@ fn minimal_deserialize_test(){
                                               properties: properties,
                                               links: links};
 
-    let r : String = "{\"aliases\":[],\"links\":[],\"properties\":{},\"subject\":\"Subject\"}".to_string();
-    let deserialized_resource: Resource = from_json(&r);
+    let deserialized_resource: Resource = from_json(&MINIMAL_TEST_STR.to_string());
 
     assert_eq!(sample_resource, deserialized_resource);
 }
@@ -60,7 +85,7 @@ fn serialize_with_aliases_test(){
 
 
     let r : String = to_json(&sample_resource);
-    assert_eq!(r, "{\"aliases\":[\"alias1\",\"alias2\"],\"links\":[],\"properties\":{},\"subject\":\"Subject\"}");
+    assert_eq!(r, ALIASES_TEST_STR.to_string());
 }
 
 
@@ -79,8 +104,7 @@ fn deserialize_with_alias_test(){
                                               properties: properties,
                                               links: links};
 
-    let r : String = "{\"aliases\":[\"alias1\",\"alias2\"],\"links\":[],\"properties\":{},\"subject\":\"Subject\"}".to_string();
-    let deserialized_resource: Resource = from_json(&r);
+    let deserialized_resource: Resource = from_json(&ALIASES_TEST_STR.to_string());
 
     assert_eq!(sample_resource, deserialized_resource);
 }
@@ -103,8 +127,7 @@ fn serialize_with_properties_test(){
 
 
     let r : String = to_json(&sample_resource);
-    assert_eq!(r,
-               "{\"aliases\":[],\"links\":[],\"properties\":{\"http://prop\":\"val\"},\"subject\":\"Subject\"}");
+    assert_eq!(r, PROPERTIES_TEST_STR.to_string());
 }
 
 
@@ -122,8 +145,7 @@ fn deserialize_with_properties_test(){
                                               properties: properties,
                                               links: links};
 
-    let r : String = "{\"aliases\":[],\"links\":[],\"properties\":{\"http://prop\":\"val\"},\"subject\":\"Subject\"}".to_string();
-    let deserialized_resource: Resource = from_json(&r);
+    let deserialized_resource: Resource = from_json(&PROPERTIES_TEST_STR.to_string());
 
     assert_eq!(sample_resource, deserialized_resource);
 }
@@ -150,8 +172,7 @@ fn serialize_with_simple_link_test(){
 
 
     let r : String = to_json(&sample_resource);
-    assert_eq!(r,
-               "{\"aliases\":[],\"links\":[{\"rel\":\"example\"}],\"properties\":{},\"subject\":\"Subject\"}");
+    assert_eq!(r, SIMPLE_LINK_TEST_STR.to_string());
 }
 
 
@@ -173,8 +194,7 @@ fn deserialize_with_simple_link_test(){
                                               properties: properties,
                                               links: links};
 
-    let r : String = "{\"aliases\":[],\"links\":[{\"rel\":\"example\"}],\"properties\":{},\"subject\":\"Subject\"}".to_string();
-    let deserialized_resource: Resource = from_json(&r);
+    let deserialized_resource: Resource = from_json(&SIMPLE_LINK_TEST_STR.to_string());
 
     assert_eq!(sample_resource, deserialized_resource);
 }
@@ -208,8 +228,7 @@ fn serialize_with_full_link_test(){
 
 
     let r : String = to_json(&sample_resource);
-    assert_eq!(r,
-               "{\"aliases\":[],\"links\":[{\"rel\":\"example\",\"href\":\"http://sample/\",\"type\":\"sample\",\"titles\":{\"es\":\"ejemplo\"},\"properties\":{\"sample_type\":\"test\"}}],\"properties\":{},\"subject\":\"Subject\"}");
+    assert_eq!(r, FULL_LINK_TEST_STR);
 }
 
 
@@ -237,8 +256,7 @@ fn deserialize_with_full_link_test(){
                                               properties: properties,
                                               links: links};
 
-    let r : String = "{\"aliases\":[],\"links\":[{\"rel\":\"example\",\"href\":\"http://sample/\",\"type\":\"sample\",\"titles\":{\"es\":\"ejemplo\"},\"properties\":{\"sample_type\":\"test\"}}],\"properties\":{},\"subject\":\"Subject\"}".to_string();
-    let deserialized_resource: Resource = from_json(&r);
+    let deserialized_resource: Resource = from_json(&FULL_LINK_TEST_STR.to_string());
 
     assert_eq!(sample_resource, deserialized_resource);
 }
@@ -274,8 +292,7 @@ fn serialize_full_test(){
 
 
     let r : String = to_json(&sample_resource);
-    assert_eq!(r,
-               "{\"aliases\":[\"one\",\"two\"],\"links\":[{\"rel\":\"example\",\"href\":\"http://sample/\",\"type\":\"sample\",\"titles\":{\"es\":\"ejemplo\"},\"properties\":{\"sample_type\":\"test\"}}],\"properties\":{\"http://prop\":\"val\"},\"subject\":\"Subject\"}");
+    assert_eq!(r, FULL_RESOURCE_TEST_STR);
 }
 
 
@@ -306,8 +323,7 @@ fn deserialize_full_test(){
                                               properties: properties,
                                               links: links};
 
-    let r : String = "{\"aliases\":[\"one\",\"two\"],\"links\":[{\"rel\":\"example\",\"href\":\"http://sample/\",\"type\":\"sample\",\"titles\":{\"es\":\"ejemplo\"},\"properties\":{\"sample_type\":\"test\"}}],\"properties\":{\"http://prop\":\"val\"},\"subject\":\"Subject\"}".to_string();
-    let deserialized_resource: Resource = from_json(&r);
+    let deserialized_resource: Resource = from_json(&FULL_RESOURCE_TEST_STR.to_string());
 
     assert_eq!(sample_resource, deserialized_resource);
 }
@@ -341,9 +357,7 @@ fn display_test(){
                                               properties: properties,
                                               links: links};
 
-    let r : String = "{\"aliases\":[\"one\",\"two\"],\"links\":[{\"rel\":\"example\",\"href\":\"http://sample/\",\"type\":\"sample\",\"titles\":{\"es\":\"ejemplo\"},\"properties\":{\"sample_type\":\"test\"}}],\"properties\":{\"http://prop\":\"val\"},\"subject\":\"Subject\"}".to_string();
-
     let serialized_resource: String = format!("{}", sample_resource);
 
-    assert_eq!(r, serialized_resource);
+    assert_eq!(FULL_RESOURCE_TEST_STR.to_string(), serialized_resource);
 }
