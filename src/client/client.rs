@@ -6,7 +6,6 @@ use hyper::header::Connection;
 
 use client::urlbuilder;
 
-// WIP
 pub fn get_by_http(hostname: &str, resource: &str) -> String {
     get(urlbuilder::get_http_url(hostname, resource).borrow())
 }
