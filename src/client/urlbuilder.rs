@@ -60,3 +60,12 @@ fn test_encoded_url_composition() {
     assert_eq!("https://example/.well-known/webfinger?resource=sample%20%26%20data",
                get_https_url("example", "sample & data"));
 }
+
+#[test]
+fn test_get_hostname() {
+    assert_eq!("example.com", get_hostname("http://example.com/~user").unwrap());
+    assert_eq!("example.com", get_hostname("acct:bob@example.com").unwrap());
+    assert_eq!("example.com", get_hostname("fred@example.com").unwrap());
+    assert_eq!("example.com", get_hostname("mailto:joe@example.com").unwrap());
+    assert_eq!("steve.example.com", get_hostname("https://steve.example.com/").unwrap());
+}
