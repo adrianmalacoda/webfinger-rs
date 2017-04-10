@@ -1,7 +1,7 @@
 [package]
 name = "webfinger"
 version = "0.1.0"
-authors = ["kenkeiras <kenkeiras@codigoparallevar.com>"]
+authors = ["Adrian Malacoda <adrian.malacoda@monarch-pass.net>", "kenkeiras <kenkeiras@codigoparallevar.com>"]
 
 [dependencies]
 log = "0.3.6"
