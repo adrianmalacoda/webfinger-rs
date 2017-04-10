@@ -4,6 +4,7 @@ extern crate webfinger;
 extern crate log;
 extern crate env_logger;
 
+use webfinger::resource::resource;
 use webfinger::client::client::get_by_https;
 use webfinger::client::urlbuilder::get_hostname;
 use std::env;
@@ -26,5 +27,9 @@ fn main() {
     let hostname = env::args().nth(2).unwrap_or_else(|| get_hostname(&identifier).expect("Failed to parse hostname from identifier"));
 
     info!("Running query for identifier {} against hostname {}", identifier, hostname);
-    println!("{}", get_by_https(&hostname, &identifier));
+    let resource_json = get_by_https(&hostname, &identifier);
+    debug!("{}", resource_json);
+    
+    let resource = resource::from_json(&resource_json);
+    println!("{}", resource);
 }
