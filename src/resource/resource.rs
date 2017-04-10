@@ -3,6 +3,7 @@ use std::option::Option;
 
 use serde_json;
 
+#[derive(Serialize, Deserialize)]
 pub struct Resource {
 
     // The value of the "subject" member is a URI that identifies the entity
@@ -12,6 +13,7 @@ pub struct Resource {
 
     // The "aliases" array is an array of zero or more URI strings that
     // identify the same entity as the "subject" URI.
+    #[serde(default = "Vec::new")]
     pub aliases: Vec<String>,
 
 
@@ -19,15 +21,17 @@ pub struct Resource {
     // names are URIs (referred to as "property identifiers") and whose
     // values are strings or null. Properties are used to convey additional
     // information about the subject of the JRD.
+    #[serde(default = "HashMap::new")]
     pub properties: HashMap<String, String>,
 
 
     // The "links" array has any number of member objects, each of which
     // represents a link [4].
+    #[serde(default = "Vec::new")]
     pub links: Vec<ResourceLink>,
 }
 
-
+#[derive(Serialize, Deserialize)]
 pub struct ResourceLink {
     // Each of these link objects can have the following members:
     //         o rel
@@ -47,6 +51,7 @@ pub struct ResourceLink {
 
     // The value of the "type" member is a string that indicates the media
     // type of the target resource (see RFC 6838).
+    #[serde(rename = "type")]
     pub type_: Option<String>,
 
 
@@ -62,6 +67,7 @@ pub struct ResourceLink {
     // utilize the link relation, and, if used, a language identifier SHOULD
     // be duly used as the name.  If the language is unknown or unspecified,
     // then the name is "und".
+    #[serde(default = "HashMap::new")]
     pub titles: HashMap<String, String>,
 
 
@@ -70,6 +76,7 @@ pub struct ResourceLink {
     // "property identifiers") and whose values are strings or null.
     // Properties are used to convey additional information about the link
     // relation.
+    #[serde(default = "HashMap::new")]
     pub properties: HashMap<String, String>,
 }
 
