@@ -5,8 +5,6 @@ pub mod resource;
 mod debug;
 mod display;
 mod equality;
-//mod serialize;
-//mod deserialize;
 
 // Testing
 mod tests;
