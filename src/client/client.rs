@@ -1,8 +1,7 @@
 use std::borrow::Borrow;
 use std::io::Read;
 
-use hyper::Client;
-use hyper::header::Connection;
+use reqwest;
 
 use client::urlbuilder;
 
@@ -20,11 +19,7 @@ pub fn get_by_https(hostname: &str, resource: &str) -> String {
 
 
 fn get(url: &str) -> String {
-    let client = Client::new();
-
-    let mut res = client.get(url)
-        .header(Connection::close())
-        .send().unwrap();
+    let mut res = reqwest::get(url).unwrap();
 
     let mut body = String::new();
     res.read_to_string(&mut body).unwrap();
