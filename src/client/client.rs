@@ -7,11 +7,15 @@ use hyper::header::Connection;
 use client::urlbuilder;
 
 pub fn get_by_http(hostname: &str, resource: &str) -> String {
-    get(urlbuilder::get_http_url(hostname, resource).borrow())
+    let url = urlbuilder::get_http_url(hostname, resource);
+    debug!("Performing HTTP query using URL {}", url);
+    get(url.borrow())
 }
 
 pub fn get_by_https(hostname: &str, resource: &str) -> String {
-    get(urlbuilder::get_https_url(hostname, resource).borrow())
+    let url = urlbuilder::get_https_url(hostname, resource);
+    debug!("Performing HTTPS query using URL {}", url);
+    get(url.borrow())
 }
 
 
@@ -27,4 +31,3 @@ fn get(url: &str) -> String {
 
     body
 }
-
