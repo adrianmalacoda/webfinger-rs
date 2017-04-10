@@ -1,6 +1,6 @@
 use url::Url;
 use url::ParseError;
-use url::percent_encoding::{utf8_percent_encode, FORM_URLENCODED_ENCODE_SET};
+use url::form_urlencoded;
 
 use std::str::FromStr;
 
@@ -29,12 +29,13 @@ pub fn get_hostname(url_str: &str) -> Result<String, ParseError> {
 }
 
 fn get_url(hostname: &str, resource: &str, schema: &str) -> String {
-    format!("{}://{}/.well-known/webfinger?resource={}",
-            schema,
-            hostname,
-            utf8_percent_encode(resource, FORM_URLENCODED_ENCODE_SET))
-}
+    let query: String = form_urlencoded::Serializer::new(String::new())
+        .append_pair("resource", resource)
+        .finish()
+        .replace("+", "%20"); // TODO: Is this necessary?
 
+    format!("{}://{}/.well-known/webfinger?{}", schema, hostname, query)
+}
 
 #[test]
 fn test_simple_url_composition() {
