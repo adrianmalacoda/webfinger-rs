@@ -16,11 +16,17 @@ pub fn get_http_url(hostname: &str, resource: &str) -> String {
 pub fn get_hostname(url_str: &str) -> Result<String, ParseError> {
     match Url::from_str(url_str) {
         Ok(url) => {
-            url.host().map(|host| format!("{}", host)).ok_or_else(|| ParseError::EmptyHost)
+            // URL parser won't handle these schemes correctly (since it expects a URL with no :// to be hostless)
+            // but we want the hostname from them anyway, so kludge together a URL to satisfy the library
+            if url.host().is_none() && (url.scheme() == "acct" || url.scheme() == "mailto") {
+                get_hostname(&format!("http://{}", url.path()))
+            } else {
+                url.host().map(|host| format!("{}", host)).ok_or_else(|| ParseError::EmptyHost)
+            }
         },
         Err(err) => {
-            if !url_str.starts_with("acct:") {
-                return get_hostname(&format!("acct:{}", url_str));
+            if !url_str.starts_with("acct://") {
+                return get_hostname(&format!("acct://{}", url_str));
             }
 
             Result::Err(err)
