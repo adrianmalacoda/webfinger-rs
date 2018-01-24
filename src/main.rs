@@ -9,6 +9,8 @@ use webfinger::client::client::get_by_https;
 use webfinger::client::urlbuilder::get_hostname;
 use std::env;
 
+extern crate serde_json;
+
 fn init_logger() {
     let mut builder = env_logger::Builder::new();
     builder.filter(None, log::LevelFilter::Info);
@@ -30,9 +32,9 @@ fn main() {
     });
 
     info!("Running query for identifier {} against hostname {}", identifier, hostname);
-    let resource_json = get_by_https(&hostname, &identifier);
+    let resource_json = get_by_https(&hostname, &identifier).expect("Failed to fetch resource");
     debug!("{}", resource_json);
 
-    let resource = resource::from_json(&resource_json);
+    let resource: resource::Resource = serde_json::from_str(&resource_json).expect("Failed to parse resource JSON");
     println!("{}", resource);
 }

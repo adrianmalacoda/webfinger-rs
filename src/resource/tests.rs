@@ -1,8 +1,10 @@
+use serde_json;
+
 #[allow(unused_imports)]
 use std::collections::HashMap;
 
 #[allow(unused_imports)]
-use resource::resource::{Resource, ResourceLink, to_json, from_json};
+use resource::resource::{Resource, ResourceLink};
 
 // Serialized resources for reference
 #[allow(dead_code)]
@@ -45,7 +47,7 @@ fn minimal_serialize_test(){
                                               links: links};
 
 
-    let r : String = to_json(&sample_resource);
+    let r : String = serde_json::to_string(&sample_resource).unwrap();
     assert_eq!(r, MINIMAL_TEST_STR.to_string());
 }
 
@@ -62,7 +64,7 @@ fn minimal_deserialize_test(){
                                               properties: properties,
                                               links: links};
 
-    let deserialized_resource: Resource = from_json(&MINIMAL_TEST_STR.to_string());
+    let deserialized_resource: Resource = serde_json::from_str(&MINIMAL_TEST_STR.to_string()).unwrap();
 
     assert_eq!(sample_resource, deserialized_resource);
 }
@@ -86,7 +88,7 @@ fn serialize_with_aliases_test(){
                                               links: links};
 
 
-    let r : String = to_json(&sample_resource);
+    let r : String = serde_json::to_string(&sample_resource).unwrap();
     assert_eq!(r, ALIASES_TEST_STR.to_string());
 }
 
@@ -106,7 +108,7 @@ fn deserialize_with_alias_test(){
                                               properties: properties,
                                               links: links};
 
-    let deserialized_resource: Resource = from_json(&ALIASES_TEST_STR.to_string());
+    let deserialized_resource: Resource = serde_json::from_str(&ALIASES_TEST_STR.to_string()).unwrap();
 
     assert_eq!(sample_resource, deserialized_resource);
 }
@@ -129,7 +131,7 @@ fn serialize_with_properties_test(){
                                               links: links};
 
 
-    let r : String = to_json(&sample_resource);
+    let r : String = serde_json::to_string(&sample_resource).unwrap();
     assert_eq!(r, PROPERTIES_TEST_STR.to_string());
 }
 
@@ -148,7 +150,7 @@ fn deserialize_with_properties_test(){
                                               properties: properties,
                                               links: links};
 
-    let deserialized_resource: Resource = from_json(&PROPERTIES_TEST_STR.to_string());
+    let deserialized_resource: Resource = serde_json::from_str(&PROPERTIES_TEST_STR.to_string()).unwrap();
 
     assert_eq!(sample_resource, deserialized_resource);
 }
@@ -175,7 +177,7 @@ fn serialize_with_simple_link_test(){
                                               links: links};
 
 
-    let r : String = to_json(&sample_resource);
+    let r : String = serde_json::to_string(&sample_resource).unwrap();
     assert_eq!(r, SIMPLE_LINK_TEST_STR.to_string());
 }
 
@@ -198,7 +200,7 @@ fn deserialize_with_simple_link_test(){
                                               properties: properties,
                                               links: links};
 
-    let deserialized_resource: Resource = from_json(&SIMPLE_LINK_TEST_STR.to_string());
+    let deserialized_resource: Resource = serde_json::from_str(&SIMPLE_LINK_TEST_STR.to_string()).unwrap();
 
     assert_eq!(sample_resource, deserialized_resource);
 }
@@ -232,7 +234,7 @@ fn serialize_with_full_link_test(){
                                               links: links};
 
 
-    let r : String = to_json(&sample_resource);
+    let r : String = serde_json::to_string(&sample_resource).unwrap();
     assert_eq!(r, FULL_LINK_TEST_STR);
 }
 
@@ -261,7 +263,7 @@ fn deserialize_with_full_link_test(){
                                               properties: properties,
                                               links: links};
 
-    let deserialized_resource: Resource = from_json(&FULL_LINK_TEST_STR.to_string());
+    let deserialized_resource: Resource = serde_json::from_str(&FULL_LINK_TEST_STR.to_string()).unwrap();
 
     assert_eq!(sample_resource, deserialized_resource);
 }
@@ -297,7 +299,7 @@ fn serialize_full_test(){
                                               links: links};
 
 
-    let r : String = to_json(&sample_resource);
+    let r : String = serde_json::to_string(&sample_resource).unwrap();
     assert_eq!(r, FULL_RESOURCE_TEST_STR);
 }
 
@@ -329,7 +331,7 @@ fn deserialize_full_test(){
                                               properties: properties,
                                               links: links};
 
-    let deserialized_resource: Resource = from_json(&FULL_RESOURCE_TEST_STR.to_string());
+    let deserialized_resource: Resource = serde_json::from_str(&FULL_RESOURCE_TEST_STR.to_string()).unwrap();
 
     assert_eq!(sample_resource, deserialized_resource);
 }

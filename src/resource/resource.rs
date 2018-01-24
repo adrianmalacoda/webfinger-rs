@@ -1,8 +1,6 @@
 use std::collections::hash_map::HashMap;
 use std::option::Option;
 
-use serde_json;
-
 #[derive(Serialize, Deserialize)]
 pub struct Resource {
 
@@ -78,14 +76,4 @@ pub struct ResourceLink {
     // relation.
     #[serde(default = "HashMap::new")]
     pub properties: HashMap<String, String>,
-}
-
-
-pub fn to_json(resource : &Resource) -> String {
-    serde_json::to_string(&resource).unwrap()
-}
-
-
-pub fn from_json(s : &String) -> Resource {
-    serde_json::from_str(s).unwrap()
 }
