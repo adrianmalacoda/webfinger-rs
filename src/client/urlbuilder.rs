@@ -12,9 +12,8 @@ pub struct ResourceUrl {
 }
 
 impl ResourceUrl {
-    pub fn new<T>(url_str: T) -> Result<ResourceUrl, ParseError>
-    where T: Into<String> {
-        let mut owned_url_str = url_str.into();
+    pub fn new(url_str: &str) -> Result<ResourceUrl, ParseError> {
+        let mut owned_url_str = url_str.to_owned();
         if !owned_url_str.starts_with("mailto://") && owned_url_str.starts_with("mailto:") {
             owned_url_str = format!("mailto://{}", owned_url_str.trim_left_matches("mailto:"));
         }
