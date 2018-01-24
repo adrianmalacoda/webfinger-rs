@@ -47,10 +47,10 @@ impl ResourceUrl {
 
     fn from_username_host(username_host: &str) -> ResourceUrl {
         username_host.find("@").map(|index| {
-            let (username, hostname) = username_host.split_at(index + 1);
+            let (username, hostname) = username_host.split_at(index);
             ResourceUrl {
                 scheme: None,
-                host: Some(hostname.to_owned()),
+                host: Some(hostname.trim_left_matches("@").to_owned()),
                 user: Some(username.to_owned())
             }
         }).unwrap_or_else(|| {
