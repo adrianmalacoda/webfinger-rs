@@ -34,7 +34,13 @@ impl ResourceUrl {
     fn from_parsed_url(url: Url) -> ResourceUrl {
         ResourceUrl {
             scheme: Some(url.scheme().to_owned()),
-            host: url.host().map(|host| format!("{}", host)),
+            host: url.host_str().map(|host_str| {
+                let mut host = host_str.to_owned();
+                if let Some(port) = url.port() {
+                    host = format!("{}:{}", host, port);
+                }
+                host
+            }),
             user: if url.username().is_empty() { None } else { Some(url.username().to_owned()) }
         }
     }
@@ -87,18 +93,24 @@ fn test_resource_url() {
     let fred_example = ResourceUrl::new("fred@example.com");
     let mailto_joe_example = ResourceUrl::new("mailto:joe@example.com");
     let https_steve_example = ResourceUrl::new("https://steve.example.com/");
+    let https_localhost_dennis = ResourceUrl::new("https://localhost:8002/users/dennis");
+    let acct_dennis_localhost = ResourceUrl::new("acct:dennis@localhost:8002");
 
     println!("{:?}", http_example_user);
     println!("{:?}", acct_bob_example);
     println!("{:?}", fred_example);
     println!("{:?}", mailto_joe_example);
     println!("{:?}", https_steve_example);
+    println!("{:?}", https_localhost_dennis);
+    println!("{:?}", acct_dennis_localhost);
 
     assert_eq!(Some("example.com".to_owned()), http_example_user.unwrap().host);
     assert_eq!(Some("example.com".to_owned()), acct_bob_example.unwrap().host);
     assert_eq!(Some("example.com".to_owned()), fred_example.unwrap().host);
     assert_eq!(Some("example.com".to_owned()), mailto_joe_example.unwrap().host);
     assert_eq!(Some("steve.example.com".to_owned()), https_steve_example.unwrap().host);
+    assert_eq!(Some("localhost:8002".to_owned()), https_localhost_dennis.unwrap().host);
+    assert_eq!(Some("localhost:8002".to_owned()), acct_dennis_localhost.unwrap().host);
 }
 
 #[test]
