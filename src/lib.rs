@@ -20,8 +20,12 @@ pub mod resource;
 pub enum WebFingerError {
     /// Error from the HTTP client
     Client(client::client::ClientError),
-    /// Parse error
-    Parse(serde_json::Error)
+    /// JSON Parse error
+    JsonParse(serde_json::Error),
+    /// URL Parse Error
+    UrlParse(url::ParseError),
+    /// Expected host but none found
+    NoHost
 }
 
 pub fn get_from_host(hostname: &str, resource: &str) -> Result<resource::resource::Resource, WebFingerError> {
@@ -29,6 +33,8 @@ pub fn get_from_host(hostname: &str, resource: &str) -> Result<resource::resourc
 }
 
 pub fn get(resource: &str) -> Result<resource::resource::Resource, WebFingerError> {
-    let hostname = client::urlbuilder::get_hostname(resource).unwrap().unwrap();
-    get_from_host(&hostname, resource)
+    match client::urlbuilder::get_hostname(resource)? {
+        Some(hostname) => get_from_host(&hostname, resource),
+        None => Err(WebFingerError::NoHost)
+    }
 }
