@@ -18,6 +18,6 @@ pub fn get_from_host(hostname: &str, resource: &str) -> resource::resource::Reso
 }
 
 pub fn get(resource: &str) -> resource::resource::Resource {
-    let hostname = client::urlbuilder::get_hostname(resource).unwrap();
+    let hostname = client::urlbuilder::get_hostname(resource).unwrap().unwrap();
     get_from_host(&hostname, resource)
 }

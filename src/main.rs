@@ -24,7 +24,10 @@ fn main() {
     init_logger();
 
     let identifier = env::args().nth(1).expect("please supply an identifier");
-    let hostname = env::args().nth(2).unwrap_or_else(|| get_hostname(&identifier).expect("Failed to parse hostname from identifier"));
+    let hostname = env::args().nth(2).unwrap_or_else(|| {
+        get_hostname(&identifier).expect("Failed to parse hostname from identifier")
+                                 .expect("Identifier does not have hostname and no hostname was provided")
+    });
 
     info!("Running query for identifier {} against hostname {}", identifier, hostname);
     let resource_json = get_by_https(&hostname, &identifier);
