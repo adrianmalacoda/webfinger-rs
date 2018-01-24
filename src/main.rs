@@ -10,14 +10,14 @@ use webfinger::client::urlbuilder::get_hostname;
 use std::env;
 
 fn init_logger() {
-    let mut builder = env_logger::LogBuilder::new();
-    builder.filter(None, log::LogLevelFilter::Info);
+    let mut builder = env_logger::Builder::new();
+    builder.filter(None, log::LevelFilter::Info);
 
     if env::var("RUST_LOG").is_ok() {
        builder.parse(&env::var("RUST_LOG").unwrap());
     }
 
-    builder.init().unwrap();
+    builder.init();
 }
 
 fn main() {
@@ -29,7 +29,7 @@ fn main() {
     info!("Running query for identifier {} against hostname {}", identifier, hostname);
     let resource_json = get_by_https(&hostname, &identifier);
     debug!("{}", resource_json);
-    
+
     let resource = resource::from_json(&resource_json);
     println!("{}", resource);
 }
